@@ -18,8 +18,13 @@ const onlyAlphabetCharacters = /[a-zA-Z]/gi;
 
 const testWord = 'AENIMA';
 
-console.log("\nWelcome to Hangman!\nPress ctrl+c to stop\n");
+// Greeting when logging in for the First Time
+console.log(`\nWelcome to Hangman!\nPress CTRL-C to stop\n`);
+console.log(`\nWords are chosen at random for each round`);
+console.log(`\nBegin by inputting your first guess below...`);
 
+
+// Global Variables / State
 let letter = '';
 let count = 6;
 let correctCharacters = [];
@@ -30,15 +35,21 @@ let gameResults = {
   "Losses": 0
 };
 
-while(count > 0) {
 
+// Start of game loop | Game counts down from 6 and once it gets to zero there is either a win or loss and the game restarts. Use Ctrl-C to exit the game and nodejs
+while(count > 0) {
+  
   guess()
   function guess() {
-    letter = prompt.question("\nChoose a single character between a-z: ").toUpperCase();
+    // Checks to see if it's the first round otherwise logs a rematch sentence 
+    if(gameResults["Total Rounds Played"] === 1) {
+      letter = prompt.question("\nChoose a single character between a-z: ").toUpperCase();
+    } else {
+      console.log(`\n\x1b[36mWant a rematch? Continue to keep playing or press CTRL-C to quit!\x1b[37m\n`);
+      letter = prompt.question("\nChoose a single character between a-z: ").toUpperCase();
+    }
   // console.log(letter);
   };
-
-
 
 
   // Invokes function to check if the user input an invalid character or if the user input more than one character, prompts user to re-enter a valid letter
@@ -75,6 +86,10 @@ while(count > 0) {
 
   if(isFound) { 
     console.log(`\nThe letter \x1b[32m'${letter}' \x1b[37mwas found!\n`); 
+    if(!correctCharacters.includes(letter)) {
+      correctCharacters.push(letter);
+      console.log(correctCharacters);
+    }
 
   } else {
     // A wrong guess pushes the letter to the incorrectCharacters array
@@ -83,7 +98,7 @@ while(count > 0) {
 
     if(hasCharacterAlreadyBeenGuessed) {
       // Informs the user that they have already guessed that particular letter 
-      console.log(`\x1b[33m\nYou have already guessed that letter.\nA repeat guess will not count against you but, it also serves no purpose.\nPlease guess a new letter below.\n`);
+      console.log(`\x1b[33m\nYou have already guessed the letter \x1b[31m\'${letter}'\x1b[33m\.\nA repeat guess will not count against you but, it also serves no purpose.\nPlease guess a new letter below.\n`);
       // if the letter has not already been guessed and is incorrect the count WILL NOT decrement
       console.log(`\x1b[37m\nYou have \x1b[33m${count} \x1b[37mguesses left\n`);
     } else {
@@ -110,6 +125,7 @@ while(count > 0) {
 
     // This resets the 'state' so the game continues to play only until the User Presses Ctrl-C to exit Node
     count = 6;
+    correctCharacters = [];
     incorrectCharacters = []; 
 
     // Increments the Total amount of Rounds played in the gameResults Object
