@@ -22,54 +22,94 @@ console.log("\nWelcome to Hangman!\nPress ctrl+c to stop\n");
 
 let letter = '';
 let count = 6;
+let incorrectCharacters =[];
+let gameResults = {
+  "Total Rounds Played": 0,
+  "Wins": 0, 
+  "Losses": 0
+};
 
 while(count > 0) {
 
-guess()
-function guess() {
-  letter = prompt.question("\nChoose a single character between a-z: ").toUpperCase();
-// console.log(letter);
-};
+  guess()
+  function guess() {
+    letter = prompt.question("\nChoose a single character between a-z: ").toUpperCase();
+  // console.log(letter);
+  };
 
 
 
 
-// Invokes function to check if the user input an invalid character or if the user input more than one character, prompts user to re-enter a valid letter
-inputValidationCheck();
-function inputValidationCheck() {
-  if(!onlyAlphabetCharacters.test(letter) || letter.length > 1) {
+  // Invokes function to check if the user input an invalid character or if the user input more than one character, prompts user to re-enter a valid letter
+  inputValidationCheck();
+  function inputValidationCheck() {
+    if(!onlyAlphabetCharacters.test(letter) || letter.length > 1) {
 
-      if(letter.length > 1) {
-        letter = prompt.question("\nOnly 'ONE' character is accepted, Please guess a single letter: ").toUpperCase()
-        inputValidationCheck();
-      } 
-      
-      else if(!onlyAlphabetCharacters.test(letter)) {
-        letter = prompt.question("\nOnly 'Alphabetical' Characters are accepted, Please guess a letter: ").toUpperCase();
-        inputValidationCheck();
+        if(letter.length > 1) {
+          letter = prompt.question("\nOnly 'ONE' character is accepted, Please guess a single letter: ").toUpperCase()
+          inputValidationCheck();
+        } 
+        
+        else if(!onlyAlphabetCharacters.test(letter)) {
+          letter = prompt.question("\nOnly 'Alphabetical' Characters are accepted, Please guess a letter: ").toUpperCase();
+          inputValidationCheck();
+
+        } else {
+          // console.log('second check: ', letter);
+        }
 
       } else {
-        // console.log('second check: ', letter);
-      }
-
-    } else {
-      // console.log('first check: ', letter);
+        // console.log('first check: ', letter);
+    }
   }
-}
 
-// console.log('After Input Check: ', letter);
+  // console.log('After Input Check: ', letter);
 
-// isFound variable checks if the letter is in the word
-let isFound = testWord.split('').includes(letter);
+  // isFound variable checks if the letter is in the word
+  let isFound = testWord.split('').includes(letter);
 
-isFound ? console.log(`\nThe letter '${letter}' was found!\n`) 
-        : console.log(`\nThe Letter ${letter} was not found!\n`, `\nYou have ${--count} guesses left`);
+  // Checks if letter has already been guessed
+  let hasCharacterAlreadyBeenGuessed = incorrectCharacters.includes(letter);
+  // console.log('hasCharacterAlreadyBeenGuessed: ', hasCharacterAlreadyBeenGuessed);
+
+  if(isFound) { 
+    console.log(`\nThe letter '${letter}' was found!\n`); 
+
+  } else {
+    // A wrong guess pushes the letter to the incorrectCharacters array
+    incorrectCharacters.push(letter);
+    console.log(`\nThe Letter '${letter}' was 'NOT' found!\n`); 
+
+    if(hasCharacterAlreadyBeenGuessed) {
+      // Informs the user that they have already guessed that particular letter 
+      console.log(`\nYou have already guessed that letter.\nA repeat guess will not count against you but, it also serves no purpose.\nPlease guess a new letter.\n`);
+      // if the letter has not already been guessed and is incorrect the count WILL NOT decrement
+      console.log(`\nYou have ${count} guesses left\n`);
+    } else {
+      // if the letter has not already been guessed and is incorrect the count will decrement
+      console.log(`\nYou have ${--count} guesses left`);
+    }
+  }
 
 
-let matchingLetter = testWord.split('').map(e => e === letter ? letter : '__');
-console.log(matchingLetter);
+  let matchingLetter = testWord.split('').map(e => e === letter ? letter : '__');
+  console.log(matchingLetter);
 
-// console.log(matchingLetter.length);
-if(count === 0) console.log(`\nThe answer was "${testWord.toUpperCase()}"`);
+
+  // Once all the guesses have run out and the user has not been able to solve the answer, we console log the answer here!
+  if(count === 0) {
+    console.log(`\n\n\nThe answer was "${testWord.toUpperCase()}"\n`);
+
+    
+    Array.from(Object.keys(gameResults)).forEach(key => {
+      console.log(`${key}: ${gameResults[key]}`);
+    
+    });
+    
+
+    // This resets the 'state' so the game continues to play only until the User Presses Ctrl-C to exit Node
+    count = 6;
+    incorrectCharacters = []; 
+  }
 
 }
