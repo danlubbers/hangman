@@ -22,9 +22,10 @@ console.log("\nWelcome to Hangman!\nPress ctrl+c to stop\n");
 
 let letter = '';
 let count = 6;
-let incorrectCharacters =[];
+let correctCharacters = [];
+let incorrectCharacters = [];
 let gameResults = {
-  "Total Rounds Played": 0,
+  "Total Rounds Played": 1,
   "Wins": 0, 
   "Losses": 0
 };
@@ -46,12 +47,12 @@ while(count > 0) {
     if(!onlyAlphabetCharacters.test(letter) || letter.length > 1) {
 
         if(letter.length > 1) {
-          letter = prompt.question("\nOnly 'ONE' character is accepted, Please guess a single letter: ").toUpperCase()
+          letter = prompt.question("\nOnly \x1b[31m'ONE' \x1b[37mcharacter is accepted, Please guess a single letter: ").toUpperCase()
           inputValidationCheck();
         } 
         
         else if(!onlyAlphabetCharacters.test(letter)) {
-          letter = prompt.question("\nOnly 'Alphabetical' Characters are accepted, Please guess a letter: ").toUpperCase();
+          letter = prompt.question("\nOnly \x1b[33m'Alphabetical' \x1b[37mCharacters are accepted, Please guess a letter: ").toUpperCase();
           inputValidationCheck();
 
         } else {
@@ -87,7 +88,7 @@ while(count > 0) {
       console.log(`\x1b[37m\nYou have \x1b[33m${count} \x1b[37mguesses left\n`);
     } else {
       // if the letter has not already been guessed and is incorrect the count will decrement
-      console.log(`\nYou have \x1b[33m${--count} \x1b[37mguesses left`);
+      console.log(`\nYou have \x1b[33m${--count} \x1b[37mguesses left\n`);
     }
   }
 
@@ -98,8 +99,8 @@ while(count > 0) {
 
   // Once all the guesses have run out and the user has not been able to solve the answer, we console log the answer here!
   if(count === 0) {
-    console.log(`\n\n\nThe answer was "${testWord.toUpperCase()}"\n`);
-
+    console.log(`\n\n\nThe answer was \x1b[32m"${testWord.toUpperCase()}" \x1b[37m\n`);
+    gameResults.Losses++;
     
     Array.from(Object.keys(gameResults)).forEach(key => {
       console.log(`${key}: ${gameResults[key]}`);
@@ -110,6 +111,9 @@ while(count > 0) {
     // This resets the 'state' so the game continues to play only until the User Presses Ctrl-C to exit Node
     count = 6;
     incorrectCharacters = []; 
+
+    // Increments the Total amount of Rounds played in the gameResults Object
+    gameResults["Total Rounds Played"]++;
   }
 
 }
