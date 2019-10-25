@@ -73,21 +73,21 @@ while(count > 0) {
   // console.log('hasCharacterAlreadyBeenGuessed: ', hasCharacterAlreadyBeenGuessed);
 
   if(isFound) { 
-    console.log(`\nThe letter '${letter}' was found!\n`); 
+    console.log(`\nThe letter \x1b[32m'${letter}' \x1b[37mwas found!\n`); 
 
   } else {
     // A wrong guess pushes the letter to the incorrectCharacters array
     incorrectCharacters.push(letter);
-    console.log(`\nThe Letter '${letter}' was 'NOT' found!\n`); 
+    console.log(`\nThe Letter \x1b[31m'${letter}' \x1b[37mwas 'NOT' found!\n`); 
 
     if(hasCharacterAlreadyBeenGuessed) {
       // Informs the user that they have already guessed that particular letter 
-      console.log(`\nYou have already guessed that letter.\nA repeat guess will not count against you but, it also serves no purpose.\nPlease guess a new letter.\n`);
+      console.log(`\x1b[33m\nYou have already guessed that letter.\nA repeat guess will not count against you but, it also serves no purpose.\nPlease guess a new letter below.\n`);
       // if the letter has not already been guessed and is incorrect the count WILL NOT decrement
-      console.log(`\nYou have ${count} guesses left\n`);
+      console.log(`\x1b[37m\nYou have \x1b[33m${count} \x1b[37mguesses left\n`);
     } else {
       // if the letter has not already been guessed and is incorrect the count will decrement
-      console.log(`\nYou have ${--count} guesses left`);
+      console.log(`\nYou have \x1b[33m${--count} \x1b[37mguesses left`);
     }
   }
 
