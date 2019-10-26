@@ -6,7 +6,9 @@ const randomWordIndex = Math.floor(Math.random(wordBank) * (wordBank.length - 0)
 // console.log(randomWordIndex);
 
 // Uses the randomWordIndex to set the actual word from the array to the variable 
-const randomWord = wordBank[randomWordIndex];
+const randomWord = wordBank[randomWordIndex].toUpperCase();
+// console.log(randomWord);
+
 // console.log(randomWord);
 
 // Using Regex to check for only upper and lower case letters from A to Z
@@ -40,14 +42,8 @@ let gameResults = {
 while(count > 0) {
   
   guess()
-  function guess() {
-    // Checks to see if it's the first round otherwise logs a rematch sentence 
-    if(gameResults["Total Rounds Played"] === 1) {
-      letter = prompt.question("\nChoose a single character between a-z: ").toUpperCase();
-    } else {
-      console.log(`\n\x1b[36mWant a rematch? Continue to keep playing or press CTRL-C to quit!\x1b[37m\n`);
-      letter = prompt.question("\nChoose a single character between a-z: ").toUpperCase();
-    }
+  function guess() {  
+    letter = prompt.question("\nChoose a single character between a-z: ").toUpperCase();
   // console.log(letter);
   };
 
@@ -57,21 +53,16 @@ while(count > 0) {
   function inputValidationCheck() {
     if(!onlyAlphabetCharacters.test(letter) || letter.length > 1) {
 
-        if(letter.length > 1) {
-          letter = prompt.question("\nOnly \x1b[31m'ONE' \x1b[37mcharacter is accepted, Please guess a single letter: ").toUpperCase()
-          inputValidationCheck();
-        } 
+      if(letter.length > 1) {
+        letter = prompt.question("\nOnly \x1b[31m'ONE' \x1b[37mcharacter is accepted, Please guess a single letter: ").toUpperCase()
+        inputValidationCheck();
+      } 
         
-        else if(!onlyAlphabetCharacters.test(letter)) {
-          letter = prompt.question("\nOnly \x1b[33m'Alphabetical' \x1b[37mCharacters are accepted, Please guess a letter: ").toUpperCase();
-          inputValidationCheck();
+      else if(!onlyAlphabetCharacters.test(letter)) {
+        letter = prompt.question("\nOnly \x1b[33m'Alphabetical' \x1b[37mCharacters are accepted, Please guess a letter: ").toUpperCase();
+        inputValidationCheck();
 
-        } else {
-          // console.log('second check: ', letter);
-        }
-
-      } else {
-        // console.log('first check: ', letter);
+      } 
     }
   }
 
@@ -117,11 +108,13 @@ while(count > 0) {
     console.log(`\n\n\nThe answer was \x1b[32m"${testWord.toUpperCase()}" \x1b[37m\n`);
     gameResults.Losses++;
     
+    // Prints the Key Value pairs for Total Rounds, Wins and Losses at the end of the round
     Array.from(Object.keys(gameResults)).forEach(key => {
-      console.log(`${key}: ${gameResults[key]}`);
-    
+      console.log(`${key}: ${gameResults[key]}`);    
     });
-    
+
+    // Informs user if they want a rematch to just keep playing or the keys they need to press to quit
+    console.log(`\n\x1b[36mWant a rematch? Continue to keep playing or press CTRL-C to quit!\x1b[37m\n`);
 
     // This resets the 'state' so the game continues to play only until the User Presses Ctrl-C to exit Node
     count = 6;
