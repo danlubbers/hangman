@@ -1,6 +1,9 @@
 const prompt = require("readline-sync");
 const wordBank = require("./word-bank.json");
 
+// Using Regex to check for only upper and lower case letters from A to Z
+const onlyAlphabetCharacters = /[a-zA-Z]/gi;
+
 // Global Variables / State
 let randomWordIndex = undefined;
 let randomWord = '';
@@ -14,6 +17,13 @@ let gameResults = {
   "Losses": 0
 };
 
+const testWord = 'AENIMA';
+
+// Greeting when logging in for the First Time
+console.log(`\nWelcome to Hangman!\nPress CTRL-C to stop\n`);
+console.log(`\nWords are chosen at random for each round`);
+console.log(`\nBegin by inputting your first guess below...\n`);
+
 // function generates new random word
 const wordGenerator = () => {
   // Gets a random number between 0 and length of the array and sets it to the variable
@@ -25,16 +35,6 @@ const wordGenerator = () => {
 console.log(randomWord);
 }
 wordGenerator();
-
-// Using Regex to check for only upper and lower case letters from A to Z
-const onlyAlphabetCharacters = /[a-zA-Z]/gi;
-
-// const testWord = 'AENIMA';
-
-// Greeting when logging in for the First Time
-console.log(`\nWelcome to Hangman!\nPress CTRL-C to stop\n`);
-console.log(`\nWords are chosen at random for each round`);
-console.log(`\nBegin by inputting your first guess below...`);
 
 
 // Start of game loop | Game counts down from 6 and once it gets to zero there is either a win or loss and the game restarts. Use Ctrl-C to exit the game and nodejs
@@ -60,7 +60,6 @@ while(count > 0) {
       else if(!onlyAlphabetCharacters.test(guessedLetter)) {
         guessedLetter = prompt.question("\nOnly \x1b[33m'Alphabetical' \x1b[37mCharacters are accepted, Please guess a letter: ").toUpperCase();
         inputValidationCheck();
-
       } 
     }
   }
@@ -68,7 +67,7 @@ while(count > 0) {
   // console.log('After Input Check: ', letter);
 
   // isFound variable checks if the letter is in the word
-  let isFound = randomWord.split('').includes(guessedLetter);
+  let isFound = testWord.split('').includes(guessedLetter);
 
   // Checks if letter has already been guessed
   let hasCharacterAlreadyBeenGuessed = incorrectCharacters.includes(guessedLetter);
@@ -76,6 +75,17 @@ while(count > 0) {
 
   if(isFound) { 
     console.log(`\nThe letter \x1b[32m'${guessedLetter}' \x1b[37mwas found!\n`); 
+
+    // If guessed letter is found, gets the first index occurance of letter in randomWord
+    // let indexOfGuessedLetter = testWord.split('').findIndex(letter => letter === guessedLetter);
+    // console.log(indexOfGuessedLetter);
+    
+    // If guessed letter is found, gets all the indexs of letter in randomWord
+    const indexOfAll = testWord.split('').map((letter, idx) => letter === guessedLetter ? idx : null).filter(idx => idx !== null)
+    console.log(indexOfAll);
+    
+
+
     if(!correctCharacters.includes(guessedLetter)) {
       correctCharacters.push(guessedLetter);
       console.log(correctCharacters);
@@ -97,14 +107,14 @@ while(count > 0) {
     }
   }
 
-
-  let matchingLetter = randomWord.split('').map(letter => letter === guessedLetter ? guessedLetter : '__');
+  // if letter matches guessed letter in random word, logs correct guessed letter otherwise logs __ to indicate a blank section that has not been guessed correctly 
+  let matchingLetter = testWord.split('').map(letter => letter === guessedLetter ? guessedLetter : '__');
   console.log(matchingLetter);
 
 
   // Once all the guesses have run out and the user has not been able to solve the answer, we console log the answer here!
   if(count === 0) {
-    console.log(`\n\n\nThe answer was \x1b[32m"${randomWord.toUpperCase()}" \x1b[37m\n`);
+    console.log(`\n\n\nThe answer was \x1b[32m"${testWord.toUpperCase()}" \x1b[37m\n`);
     gameResults.Losses++;
     
     // Prints the Key Value pairs for Total Rounds, Wins and Losses at the end of the round
