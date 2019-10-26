@@ -12,7 +12,6 @@ let randomWordIndex = undefined;
 let randomWord = '';
 let guessedLetter = '';
 let count = 6;
-let correctCharacters = Array.apply(null, Array(testWord.length)).map(_=> '__');
 let incorrectCharacters = [];
 let gameResults = {
   "Total Rounds Played": 1,
@@ -31,6 +30,10 @@ const wordGenerator = () => {
   console.log({randomWord});
 }
 wordGenerator();
+
+// The correctCharacters Array length has to be set after the wordGenerator() because otherwise the randomWord has not been initialized yet and will be a length of 0
+let correctCharacters = Array.apply(null, Array(randomWord.length)).map(_=> '__');
+console.log('after initialization: ', correctCharacters);
 
 
 // Greeting when logging in for the First Time
@@ -69,7 +72,7 @@ while(count > 0) {
   // console.log('After Input Check: ', letter);
 
   // isFound variable checks if the letter is in the word
-  let isFound = testWord.split('').includes(guessedLetter);
+  let isFound = randomWord.split('').includes(guessedLetter);
 
   // Checks if letter has already been guessed
   let hasCharacterAlreadyBeenGuessed = incorrectCharacters.includes(guessedLetter);
@@ -83,7 +86,7 @@ while(count > 0) {
     // console.log(indexOfGuessedLetter);
     
     // If guessed letter is found, gets all the indexs of letter in randomWord
-    const indexOfAll = testWord.split('').map((letter, idx) => letter === guessedLetter ? idx : null).filter(idx => idx !== null)
+    const indexOfAll = randomWord.split('').map((letter, idx) => letter === guessedLetter ? idx : null).filter(idx => idx !== null)
     // console.log(indexOfAll);
     
     
@@ -113,13 +116,13 @@ while(count > 0) {
   }
 
   // if letter matches guessed letter in random word, logs correct guessed letter otherwise logs __ to indicate a blank section that has not been guessed correctly 
-  let matchingLetter = testWord.split('').map(letter => letter === guessedLetter ? guessedLetter : '__');
+  let matchingLetter = randomWord.split('').map(letter => letter === guessedLetter ? guessedLetter : '__');
   // console.log({matchingLetter});
 
 
   // *** WINNING ROUND ***
-  if(correctCharacters.join('') === testWord) {
-    console.log(`\n\nYou guessed the correct answer \x1b[32m${testWord} \x1b[37m\n`);
+  if(correctCharacters.join('') === randomWord) {
+    console.log(`\n\nYou guessed the correct answer \x1b[32m${randomWord} \x1b[37m\n`);
     gameResults.Wins++;
 
      // Prints the Key Value pairs for Total Rounds, Wins and Losses at the end of the round
@@ -129,20 +132,22 @@ while(count > 0) {
 
     // This resets the 'state' so the game continues to play only until the User Presses Ctrl-C to exit Node
     count = 6;
-    correctCharacters = Array.apply(null, Array(testWord.length)).map(_=> '__');
     incorrectCharacters = []; 
-
+    
     // Increments the Total amount of Rounds played in the gameResults Object
     gameResults["Total Rounds Played"]++;
-
+    
     // Invokes wordGenerator to pick a new random word for the next round
     wordGenerator();
+    
+    // The correctCharacters Array length has to be set after the wordGenerator() picks the next random word because the length of the word might be different
+    correctCharacters = Array.apply(null, Array(randomWord.length)).map(_=> '__');
   }
 
   // *** LOSING ROUND ***
   // Once all the guesses have run out and the user has not been able to solve the answer, we console log the answer here!
   if(count === 0) {
-    console.log(`\n\n\nThe answer was \x1b[32m"${testWord.toUpperCase()}" \x1b[37m\n`);
+    console.log(`\n\n\nThe answer was \x1b[32m"${randomWord.toUpperCase()}" \x1b[37m\n`);
     gameResults.Losses++;
     
     // Prints the Key Value pairs for Total Rounds, Wins and Losses at the end of the round
@@ -155,14 +160,16 @@ while(count > 0) {
 
     // This resets the 'state' so the game continues to play only until the User Presses Ctrl-C to exit Node
     count = 6;
-    correctCharacters = Array.apply(null, Array(testWord.length)).map(_=> '__');
     incorrectCharacters = []; 
-
+    
     // Increments the Total amount of Rounds played in the gameResults Object
     gameResults["Total Rounds Played"]++;
-
+    
     // Invokes wordGenerator to pick a new random word for the next round
     wordGenerator();
+    
+    // The correctCharacters Array length has to be set after the wordGenerator() picks the next random word because the length of the word might be different
+    correctCharacters = Array.apply(null, Array(randomWord.length)).map(_=> '__');
   }
 
 }
