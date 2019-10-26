@@ -117,6 +117,29 @@ while(count > 0) {
   // console.log({matchingLetter});
 
 
+  // *** WINNING ROUND ***
+  if(correctCharacters.join('') === testWord) {
+    console.log(`\n\nYou guessed the correct answer \x1b[32m${testWord} \x1b[37m\n`);
+    gameResults.Wins++;
+
+     // Prints the Key Value pairs for Total Rounds, Wins and Losses at the end of the round
+     Array.from(Object.keys(gameResults)).forEach(key => {
+      console.log(`${key}: ${gameResults[key]}`);    
+    });
+
+    // This resets the 'state' so the game continues to play only until the User Presses Ctrl-C to exit Node
+    count = 6;
+    correctCharacters = Array.apply(null, Array(testWord.length)).map(_=> '__');
+    incorrectCharacters = []; 
+
+    // Increments the Total amount of Rounds played in the gameResults Object
+    gameResults["Total Rounds Played"]++;
+
+    // Invokes wordGenerator to pick a new random word for the next round
+    wordGenerator();
+  }
+
+  // *** LOSING ROUND ***
   // Once all the guesses have run out and the user has not been able to solve the answer, we console log the answer here!
   if(count === 0) {
     console.log(`\n\n\nThe answer was \x1b[32m"${testWord.toUpperCase()}" \x1b[37m\n`);
