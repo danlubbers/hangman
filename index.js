@@ -48,7 +48,7 @@ while(count > 0) {
   
   guess()
   function guess() {  
-    guessedLetter = prompt.question("\nChoose a single character between a-z: ").toUpperCase();
+    guessedLetter = prompt.question("\nChoose a single letter between a-z: ").toUpperCase();
   // console.log(letter);
   };
 
@@ -59,7 +59,7 @@ while(count > 0) {
     if(!onlyAlphabetCharacters.test(guessedLetter) || guessedLetter.length > 1) {
 
       if(guessedLetter.length > 1) {
-        guessedLetter = prompt.question("\nOnly \x1b[31m'ONE' \x1b[37mcharacter is accepted, Please guess a single letter: ").toUpperCase()
+        guessedLetter = prompt.question("\nOnly \x1b[31m'ONE' \x1b[37mletter is accepted, Please guess a single letter: ").toUpperCase()
         inputValidationCheck();
       } 
         
@@ -105,15 +105,15 @@ while(count > 0) {
     
     // *** START OF HANGMAN GRAPHIC ***
     switch(count) {
-      case 6: console.log(` 0`);
+      case 6: console.log(` 0\n`);
         break;
-      case 5: console.log(` 0\n |`);
+      case 5: console.log(` 0\n |\n`);
         break;
-      case 4: console.log(` 0\n\\|`);
+      case 4: console.log(` 0\n\\|\n`);
         break;
-      case 3: console.log(` 0\n\\|/\n |`);
+      case 3: console.log(` 0\n\\|/\n |\n`);
         break;
-      case 2: console.log(` 0\n\\|/\n |\n/`);
+      case 2: console.log(` 0\n\\|/\n |\n/\n`);
         break;
       case 1: console.log(` 0\n\\|/\n |\n/ \\\n`);
         break;
@@ -129,6 +129,7 @@ while(count > 0) {
       console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     } else {
       // if the letter has not already been guessed and is incorrect the count will decrement
+      
       console.log(`\nYou have \x1b[33m${--count} \x1b[37mguesses left\n`);
     }
   }
