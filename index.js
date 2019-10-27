@@ -35,13 +35,14 @@ wordGenerator();
 let correctCharacters = Array(randomWord.length).fill('__');
 // console.log('after initialization: ', correctCharacters);
 
-
+// *** GREETING *** 
 // Greeting when logging in for the First Time
 console.log(`\nWelcome to Hangman!\nPress CTRL-C to stop\n`);
 console.log(`\nWords are chosen at random for each round`);
 console.log(`\nBegin by inputting your first guess below...\n`);
 
 
+// *** START OF THE GAME ***
 // Start of game loop | Game counts down from 6 and once it gets to zero there is either a win or loss and the game restarts. Use Ctrl-C to exit the game and nodejs
 while(count > 0) {
   
@@ -101,14 +102,31 @@ while(count > 0) {
     // A wrong guess pushes the letter to the incorrectCharacters array
     incorrectCharacters.push(guessedLetter);
     console.log(`\nThe Letter \x1b[31m'${guessedLetter}' \x1b[37mwas 'NOT' found!\n`); 
-    console.log(correctCharacters.join(' '));
+    
+    // *** START OF HANGMAN GRAPHIC ***
+    switch(count) {
+      case 6: console.log(` 0`);
+        break;
+      case 5: console.log(` 0\n |`);
+        break;
+      case 4: console.log(` 0\n\\|`);
+        break;
+      case 3: console.log(` 0\n\\|/\n |`);
+        break;
+      case 2: console.log(` 0\n\\|/\n |\n/`);
+        break;
+      case 1: console.log(` 0\n\\|/\n |\n/ \\\n`);
+        break;
+    };
+    
+    console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     
     if(hasCharacterAlreadyBeenGuessed) {
       // Informs the user that they have already guessed that particular letter 
       console.log(`\x1b[33m\nYou have already guessed the letter \x1b[31m\'${guessedLetter}'\x1b[33m\.\nA repeat guess will not count against you but, it also serves no purpose.\nPlease guess a new letter below.\n`);
       // if the letter has not already been guessed and is incorrect the count WILL NOT decrement
       console.log(`\x1b[37m\nYou have \x1b[33m${count} \x1b[37mguesses left\n`);
-      console.log(correctCharacters.join(' '));
+      console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     } else {
       // if the letter has not already been guessed and is incorrect the count will decrement
       console.log(`\nYou have \x1b[33m${--count} \x1b[37mguesses left\n`);
@@ -116,7 +134,7 @@ while(count > 0) {
   }
 
   // if letter matches guessed letter in random word, logs correct guessed letter otherwise logs __ to indicate a blank section that has not been guessed correctly 
-  let matchingLetter = randomWord.split('').map(letter => letter === guessedLetter ? guessedLetter : '__');
+  // let matchingLetter = randomWord.split('').map(letter => letter === guessedLetter ? guessedLetter : '__');
   // console.log({matchingLetter});
 
 
