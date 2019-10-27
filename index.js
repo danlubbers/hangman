@@ -32,8 +32,8 @@ const wordGenerator = () => {
 wordGenerator();
 
 // The correctCharacters Array length has to be set after the wordGenerator() because otherwise the randomWord has not been initialized yet and will be a length of 0
-let correctCharacters = Array.apply(null, Array(randomWord.length)).map(_=> '__');
-console.log('after initialization: ', correctCharacters);
+let correctCharacters = Array(randomWord.length).fill('__');
+// console.log('after initialization: ', correctCharacters);
 
 
 // Greeting when logging in for the First Time
@@ -94,21 +94,21 @@ while(count > 0) {
       // maps over indexOfAll and pushes the guessedLetter to each index in which it was found
       indexOfAll.map(indexNum => correctCharacters.splice(indexNum, 1, guessedLetter))
       // correctCharacters.push(guessedLetter);
-      console.log({correctCharacters});
+      console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     }
     
   } else {
     // A wrong guess pushes the letter to the incorrectCharacters array
     incorrectCharacters.push(guessedLetter);
     console.log(`\nThe Letter \x1b[31m'${guessedLetter}' \x1b[37mwas 'NOT' found!\n`); 
-    console.log({correctCharacters});
+    console.log(correctCharacters.join(' '));
     
     if(hasCharacterAlreadyBeenGuessed) {
       // Informs the user that they have already guessed that particular letter 
       console.log(`\x1b[33m\nYou have already guessed the letter \x1b[31m\'${guessedLetter}'\x1b[33m\.\nA repeat guess will not count against you but, it also serves no purpose.\nPlease guess a new letter below.\n`);
       // if the letter has not already been guessed and is incorrect the count WILL NOT decrement
       console.log(`\x1b[37m\nYou have \x1b[33m${count} \x1b[37mguesses left\n`);
-      console.log({correctCharacters});
+      console.log(correctCharacters.join(' '));
     } else {
       // if the letter has not already been guessed and is incorrect the count will decrement
       console.log(`\nYou have \x1b[33m${--count} \x1b[37mguesses left\n`);
@@ -122,7 +122,7 @@ while(count > 0) {
 
   // *** WINNING ROUND ***
   if(correctCharacters.join('') === randomWord) {
-    console.log(`\n\nYou guessed the correct answer \x1b[32m${randomWord} \x1b[37m\n`);
+    console.log(`\n\nYou guessed the correct word: \x1b[32m${randomWord} \x1b[37m\n\n`);
     gameResults.Wins++;
 
      // Prints the Key Value pairs for Total Rounds, Wins and Losses at the end of the round
@@ -141,13 +141,13 @@ while(count > 0) {
     wordGenerator();
     
     // The correctCharacters Array length has to be set after the wordGenerator() picks the next random word because the length of the word might be different
-    correctCharacters = Array.apply(null, Array(randomWord.length)).map(_=> '__');
+    correctCharacters = Array(randomWord.length).fill('__');
   }
 
   // *** LOSING ROUND ***
   // Once all the guesses have run out and the user has not been able to solve the answer, we console log the answer here!
   if(count === 0) {
-    console.log(`\n\n\nThe answer was \x1b[32m"${randomWord.toUpperCase()}" \x1b[37m\n`);
+    console.log(`\nThe answer was \x1b[32m"${randomWord.toUpperCase()}" \x1b[37m\n\n`);
     gameResults.Losses++;
     
     // Prints the Key Value pairs for Total Rounds, Wins and Losses at the end of the round
@@ -169,7 +169,7 @@ while(count > 0) {
     wordGenerator();
     
     // The correctCharacters Array length has to be set after the wordGenerator() picks the next random word because the length of the word might be different
-    correctCharacters = Array.apply(null, Array(randomWord.length)).map(_=> '__');
+    correctCharacters = Array(randomWord.length).fill('__');
   }
 
 }
