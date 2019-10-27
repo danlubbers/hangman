@@ -128,9 +128,15 @@ while(count > 0) {
       console.log(`\x1b[37m\nYou have \x1b[33m${count} \x1b[37mguesses left\n`);
       console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     } else {
-      // if the letter has not already been guessed and is incorrect the count will decrement
-      
-      console.log(`\nYou have \x1b[33m${--count} \x1b[37mguesses left\n`);
+      // if there is only 1 guess left changes guesses plural to singular to be grammatically correct
+      if(count === 2) {
+        // SINGULAR
+        // if the letter has not already been guessed and is incorrect the count will decrement
+        console.log(`\nYou have \x1b[33m${--count} \x1b[37mguess left\n`);
+      } else {
+        // PLURAL
+        console.log(`\nYou have \x1b[33m${--count} \x1b[37mguesses left\n`);
+      }
     }
   }
 
@@ -148,6 +154,9 @@ while(count > 0) {
      Array.from(Object.keys(gameResults)).forEach(key => {
       console.log(`${key}: ${gameResults[key]}`);    
     });
+
+    // Informs user if they want a rematch to just keep playing or the keys they need to press to quit
+    console.log(`\n\x1b[36mWant to play another round? Continue to keep playing or press CTRL-C to quit!\x1b[37m\n`);
 
     // This resets the 'state' so the game continues to play only until the User Presses Ctrl-C to exit Node
     count = 6;
