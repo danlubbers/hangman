@@ -3,7 +3,8 @@ const wordBank = require("./word-bank.json");
 
 // Global Variables
 const clearScreenAndHistory = "\u001b[H\u001b[2J\u001b[3J";
-const onlyAlphabetCharacters = /[a-zA-Z]/gi;
+const clearScreen = "\u001B[2J\u001B[0;0f";
+const onlyAlphabetCharacters = /[a-z]/gi;
 let randomWordIndex = undefined;
 let randomWord = '';
 let guessedLetter = '';
@@ -59,12 +60,12 @@ while(count > 0) {
   inputValidationCheck();
   function inputValidationCheck() {
     if(!onlyAlphabetCharacters.test(guessedLetter) || guessedLetter.length > 1) {
-
+      
       if(guessedLetter.length > 1) {
         guessedLetter = prompt.question("\nOnly \x1b[31m'ONE' \x1b[37mletter is accepted, Please guess a single letter: ").toUpperCase()
         inputValidationCheck();
       } 
-        
+      
       else if(!onlyAlphabetCharacters.test(guessedLetter)) {
         guessedLetter = prompt.question("\nOnly \x1b[33m'Alphabetical' \x1b[37mCharacters are accepted, Please guess a letter: ").toUpperCase();
         inputValidationCheck();
@@ -81,44 +82,44 @@ while(count > 0) {
   let hasCharacterAlreadyBeenGuessed = incorrectCharacters.includes(guessedLetter);
   // console.log('hasCharacterAlreadyBeenGuessed: ', hasCharacterAlreadyBeenGuessed);
 
-  if(isFound) { 
+  // if isFound is true and the letter is not already been added to correctCharacters log the letter was found
+  if(isFound && !correctCharacters.includes(guessedLetter)) { 
     console.log(`\nThe letter \x1b[32m'${guessedLetter}' \x1b[37mwas found!\n`); 
-
-    // If guessed letter is found, gets the first index occurance of letter in randomWord
-    // let indexOfGuessedLetter = testWord.split('').findIndex(letter => letter === guessedLetter);
-    // console.log(indexOfGuessedLetter);
     
     // If guessed letter is found, gets "all" the indexs of letter in randomWord
-    const indexOfAll = randomWord.split('').map((letter, idx) => letter === guessedLetter ? idx : null).filter(idx => idx !== null)
-    // console.log(indexOfAll);
+    const indexOfAll = randomWord.split('').map((letter, idx) => letter === guessedLetter ? idx : null).filter(idx => idx !== null)  
     
+    // maps over indexOfAll and pushes the guessedLetter to each index in which it was found
+    indexOfAll.map(indexNum => correctCharacters.splice(indexNum, 1, guessedLetter))
+    // correctCharacters.push(guessedLetter);
+    console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     
-    if(!correctCharacters.includes(guessedLetter)) {
-      // maps over indexOfAll and pushes the guessedLetter to each index in which it was found
-      indexOfAll.map(indexNum => correctCharacters.splice(indexNum, 1, guessedLetter))
-      // correctCharacters.push(guessedLetter);
-      console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
-    }
+    // if correctCharacters array already has the guessed letter, will notify, has already been found.
+  } else if(correctCharacters.includes(guessedLetter)) {
+    console.log(`\nThe letter \x1b[32m'${guessedLetter}' \x1b[37mhas already been found!\n`);
+    console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
+
     
   } else {
     // A wrong guess pushes the letter to the incorrectCharacters array
     incorrectCharacters.push(guessedLetter);
-    console.log(`\nThe Letter \x1b[31m'${guessedLetter}' \x1b[37mwas 'NOT' found!\n`); 
+    console.log(`\nThe letter \x1b[31m'${guessedLetter}' \x1b[37mwas 'NOT' found!\n`); 
+    console.log(`Incorrect Guesses: \x1b[31m${incorrectCharacters.join(' ')}\x1b[37m\n`);
     
     
     // *** START OF HANGMAN GRAPHIC ***
     switch(count) {
-      case 6: console.log(`  🙂\n`);
+      case 6: console.log(`    🙂\n`);
         break;
-      case 5: console.log(`  🤨\n   |\n`);
+      case 5: console.log(`    🤨\n     |\n`);
         break;
-      case 4: console.log(`  😑\n  \\|\n`);
+      case 4: console.log(`    😑\n    \\|\n`);
         break;
-      case 3: console.log(`  😳\n\  \\|/\n   |\n`);
+      case 3: console.log(`    😳\n\    \\|/\n     |\n`);
         break;
-      case 2: console.log(`  😵\n\  \\|/\n   |\n  /\n`);
+      case 2: console.log(`    😵\n\    \\|/\n     |\n    /\n`);
         break;
-      case 1: console.log(`  💀\n\  \\|/\n   |\n  / \\\n`);
+      case 1: console.log(`    💀\n\    \\|/\n     |\n    / \\\n`);
         break;
     };
     
@@ -157,7 +158,8 @@ while(count > 0) {
        
        // The correctCharacters Array length has to be set after the wordGenerator() picks the next random word because the length of the word might be different
        correctCharacters = Array(randomWord.length).fill('__');
-  }
+       
+      }
 
   // *** WINNING ROUND ***
   if(correctCharacters.join('') === randomWord) {
