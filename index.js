@@ -143,6 +143,22 @@ while(count > 0) {
     }
   }
 
+  // Setup an End Of Round function to keep with the practice of DRY: Do Not Repeat yourself
+  function endOfRound() {
+       // This resets the 'state' so the game continues to play only until the User Presses Ctrl-C to exit Node
+       count = 6;
+       incorrectCharacters = []; 
+       
+       // Increments the Total amount of Rounds played in the gameResults Object
+       gameResults["Total Rounds Played"]++;
+       
+       // Invokes wordGenerator to pick a new random word for the next round
+       wordGenerator();
+       
+       // The correctCharacters Array length has to be set after the wordGenerator() picks the next random word because the length of the word might be different
+       correctCharacters = Array(randomWord.length).fill('__');
+  }
+
   // *** WINNING ROUND ***
   if(correctCharacters.join('') === randomWord) {
     console.log(`\n\nYou guessed the correct word: \x1b[32m${randomWord} \x1b[37m\n\n`);
@@ -156,18 +172,7 @@ while(count > 0) {
     // Informs user if they want a rematch to just keep playing or the keys they need to press to quit
     console.log(`\n\x1b[36mWant to play another round? Continue to keep playing or press CTRL-C to quit!\x1b[37m\n`);
 
-    // This resets the 'state' so the game continues to play only until the User Presses Ctrl-C to exit Node
-    count = 6;
-    incorrectCharacters = []; 
-    
-    // Increments the Total amount of Rounds played in the gameResults Object
-    gameResults["Total Rounds Played"]++;
-    
-    // Invokes wordGenerator to pick a new random word for the next round
-    wordGenerator();
-    
-    // The correctCharacters Array length has to be set after the wordGenerator() picks the next random word because the length of the word might be different
-    correctCharacters = Array(randomWord.length).fill('__');
+    endOfRound();
   }
   
   // *** LOSING ROUND ***
@@ -184,17 +189,6 @@ while(count > 0) {
     // Informs user if they want a rematch to just keep playing or the keys they need to press to quit
     console.log(`\n\x1b[36mWant a rematch? Continue to keep playing or press CTRL-C to quit!\x1b[37m\n`);
     
-    // This resets the 'state' so the game continues to play only until the User Presses Ctrl-C to exit Node
-    count = 6;
-    incorrectCharacters = []; 
-    
-    // Increments the Total amount of Rounds played in the gameResults Object
-    gameResults["Total Rounds Played"]++;
-    
-    // Invokes wordGenerator to pick a new random word for the next round
-    wordGenerator();
-
-    // The correctCharacters Array length has to be set after the wordGenerator() picks the next random word because the length of the word might be different
-    correctCharacters = Array(randomWord.length).fill('__');
+    endOfRound();
   }
 }
