@@ -1,55 +1,57 @@
 const prompt = require("readline-sync");
 const wordBank = require("./word-bank.json");
 
-// Using Regex to check for only upper and lower case letters from A to Z
+// Global Variables
+const clearScreenAndHistory = "\u001b[H\u001b[2J\u001b[3J";
 const onlyAlphabetCharacters = /[a-zA-Z]/gi;
-
-
-const testWord = 'AENIMA';
-
-// Global Variables / State
 let randomWordIndex = undefined;
 let randomWord = '';
 let guessedLetter = '';
 let count = 6;
+let correctCharacters = '';
 let incorrectCharacters = [];
+
+// State
 let gameResults = {
   "Total Rounds Played": 1,
   "Wins": 0, 
   "Losses": 0
 };
 
+// Starts with a fresh clear interface
+console.log(clearScreenAndHistory);
+
+wordGenerator();
 // function generates new random word
-const wordGenerator = () => {
+function wordGenerator() {
   // Gets a random number between 0 and length of the array and sets it to the variable
   randomWordIndex = Math.floor(Math.random(wordBank) * (wordBank.length - 0) + 0);
   // console.log(randomWordIndex);
   
   // Uses the randomWordIndex to set the actual word from the array to the variable 
   randomWord = wordBank[randomWordIndex].toUpperCase();
-  console.log({randomWord});
+  // console.log({randomWord});
 }
-wordGenerator();
+
 
 // The correctCharacters Array length has to be set after the wordGenerator() because otherwise the randomWord has not been initialized yet and will be a length of 0
-let correctCharacters = Array(randomWord.length).fill('__');
+correctCharacters = Array(randomWord.length).fill('__');
 // console.log('after initialization: ', correctCharacters);
 
 // *** GREETING *** 
 // Greeting when logging in for the First Time
-console.log(`\nWelcome to Hangman!\nPress CTRL-C to stop\n`);
+console.log(`Welcome to Hangman!\nPress CTRL-C to stop\n`);
 console.log(`\nWords are chosen at random for each round`);
 console.log(`\nBegin by inputting your first guess below...\n`);
 
 
 // *** START OF THE GAME ***
-// Start of game loop | Game counts down from 6 and once it gets to zero there is either a win or loss and the game restarts. Use Ctrl-C to exit the game and nodejs
+// Start of game loop | Game counts down from 6 and once it gets to zero there is either a win or loss and the game restarts.
 while(count > 0) {
-  
+
   guess()
   function guess() {  
     guessedLetter = prompt.question("\nChoose a single letter between a-z: ").toUpperCase();
-  // console.log(letter);
   };
 
 
@@ -86,7 +88,7 @@ while(count > 0) {
     // let indexOfGuessedLetter = testWord.split('').findIndex(letter => letter === guessedLetter);
     // console.log(indexOfGuessedLetter);
     
-    // If guessed letter is found, gets all the indexs of letter in randomWord
+    // If guessed letter is found, gets "all" the indexs of letter in randomWord
     const indexOfAll = randomWord.split('').map((letter, idx) => letter === guessedLetter ? idx : null).filter(idx => idx !== null)
     // console.log(indexOfAll);
     
@@ -103,19 +105,20 @@ while(count > 0) {
     incorrectCharacters.push(guessedLetter);
     console.log(`\nThe Letter \x1b[31m'${guessedLetter}' \x1b[37mwas 'NOT' found!\n`); 
     
+    
     // *** START OF HANGMAN GRAPHIC ***
     switch(count) {
-      case 6: console.log(` 0\n`);
+      case 6: console.log(`  🙂\n`);
         break;
-      case 5: console.log(` 0\n |\n`);
+      case 5: console.log(`  🤨\n   |\n`);
         break;
-      case 4: console.log(` 0\n\\|\n`);
+      case 4: console.log(`  😑\n  \\|\n`);
         break;
-      case 3: console.log(` 0\n\\|/\n |\n`);
+      case 3: console.log(`  😳\n\  \\|/\n   |\n`);
         break;
-      case 2: console.log(` 0\n\\|/\n |\n/\n`);
+      case 2: console.log(`  😵\n\  \\|/\n   |\n  /\n`);
         break;
-      case 1: console.log(` 0\n\\|/\n |\n/ \\\n`);
+      case 1: console.log(`  💀\n\  \\|/\n   |\n  / \\\n`);
         break;
     };
     
@@ -139,11 +142,6 @@ while(count > 0) {
       }
     }
   }
-
-  // if letter matches guessed letter in random word, logs correct guessed letter otherwise logs __ to indicate a blank section that has not been guessed correctly 
-  // let matchingLetter = randomWord.split('').map(letter => letter === guessedLetter ? guessedLetter : '__');
-  // console.log({matchingLetter});
-
 
   // *** WINNING ROUND ***
   if(correctCharacters.join('') === randomWord) {
@@ -171,7 +169,7 @@ while(count > 0) {
     // The correctCharacters Array length has to be set after the wordGenerator() picks the next random word because the length of the word might be different
     correctCharacters = Array(randomWord.length).fill('__');
   }
-
+  
   // *** LOSING ROUND ***
   // Once all the guesses have run out and the user has not been able to solve the answer, we console log the answer here!
   if(count === 0) {
@@ -182,10 +180,10 @@ while(count > 0) {
     Array.from(Object.keys(gameResults)).forEach(key => {
       console.log(`${key}: ${gameResults[key]}`);    
     });
-
+    
     // Informs user if they want a rematch to just keep playing or the keys they need to press to quit
     console.log(`\n\x1b[36mWant a rematch? Continue to keep playing or press CTRL-C to quit!\x1b[37m\n`);
-
+    
     // This resets the 'state' so the game continues to play only until the User Presses Ctrl-C to exit Node
     count = 6;
     incorrectCharacters = []; 
@@ -195,9 +193,8 @@ while(count > 0) {
     
     // Invokes wordGenerator to pick a new random word for the next round
     wordGenerator();
-    
+
     // The correctCharacters Array length has to be set after the wordGenerator() picks the next random word because the length of the word might be different
     correctCharacters = Array(randomWord.length).fill('__');
   }
-
 }
