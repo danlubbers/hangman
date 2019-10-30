@@ -115,7 +115,7 @@ while(count > 0) {
   if(isFound && !correctCharacters.includes(guessedLetter)) { 
     console.log(clearScreen);
     console.log(header);
-    console.log(hangmanGraphic);
+    hangmanGraphicBuilder();
     
     console.log(`Incorrect Guesses: \x1b[36m${incorrectCharacters.join(' ')}\x1b[37m\n`);
     console.log(`\nThe letter \x1b[32m'${guessedLetter}' \x1b[37mwas found!\n`); 
@@ -127,14 +127,13 @@ while(count > 0) {
     indexOfAll.map(indexNum => correctCharacters.splice(indexNum, 1, guessedLetter))
     // correctCharacters.push(guessedLetter);
 
-    hangmanGraphicBuilder();
     console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     
     // if correctCharacters array already has the guessed letter, will notify, has already been found.
   } else if(correctCharacters.includes(guessedLetter)) {
     console.log(clearScreen);
     console.log(header);
-    console.log(hangmanGraphic);
+    hangmanGraphicBuilder();
     console.log(`\nThe letter \x1b[32m'${guessedLetter}' \x1b[37mhas already been found!\n`);
     console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
 
@@ -142,13 +141,13 @@ while(count > 0) {
   } else {
     console.log(clearScreen);
     console.log(header);
-    console.log(hangmanGraphic);
+    hangmanGraphicBuilder();
     // A wrong guess pushes the letter to the incorrectCharacters array
     incorrectCharacters.push(guessedLetter);
     console.log(`\nThe letter \x1b[31m'${guessedLetter}' \x1b[37mwas 'NOT' found!\n`); 
     console.log(`Incorrect Guesses: \x1b[36m${incorrectCharacters.join(' ')}\x1b[37m\n`);
     
-    hangmanGraphicBuilder();
+    // hangmanGraphicBuilder();
 
     console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     
