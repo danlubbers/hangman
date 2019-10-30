@@ -13,9 +13,9 @@ const header = `\x1b[32m _
 \x1b[37m`;
 
 const hangmanGraphic = `\x1b[32m___________
-|         |
-|         |
-|         🤯
+| /       |
+|/        |
+|        🤯
 |        \\|/
 |         |
 |        / \\
@@ -112,6 +112,11 @@ while(count > 0) {
 
   // if isFound is true and the letter is not already been added to correctCharacters, log the letter was found
   if(isFound && !correctCharacters.includes(guessedLetter)) { 
+    console.log(clearScreen);
+    console.log(header);
+    console.log(hangmanGraphic);
+    
+    console.log(`Incorrect Guesses: \x1b[36m${incorrectCharacters.join(' ')}\x1b[37m\n`);
     console.log(`\nThe letter \x1b[32m'${guessedLetter}' \x1b[37mwas found!\n`); 
     
     // If guessed letter is found, gets "all" the indexs of letter in randomWord
@@ -124,11 +129,17 @@ while(count > 0) {
     
     // if correctCharacters array already has the guessed letter, will notify, has already been found.
   } else if(correctCharacters.includes(guessedLetter)) {
+    console.log(clearScreen);
+    console.log(header);
+    console.log(hangmanGraphic);
     console.log(`\nThe letter \x1b[32m'${guessedLetter}' \x1b[37mhas already been found!\n`);
     console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
 
     
   } else {
+    console.log(clearScreen);
+    console.log(header);
+    console.log(hangmanGraphic);
     // A wrong guess pushes the letter to the incorrectCharacters array
     incorrectCharacters.push(guessedLetter);
     console.log(`\nThe letter \x1b[31m'${guessedLetter}' \x1b[37mwas 'NOT' found!\n`); 
