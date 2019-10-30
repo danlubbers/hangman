@@ -128,6 +128,8 @@ while(count > 0) {
     // correctCharacters.push(guessedLetter);
 
     console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
+
+    console.log(`\x1b[37m\nYou have \x1b[33m${count} \x1b[37mguesses left\n`);
     
     // if correctCharacters array already has the guessed letter, will notify, has already been found.
   } else if(correctCharacters.includes(guessedLetter)) {
@@ -136,7 +138,7 @@ while(count > 0) {
     hangmanGraphicBuilder();
     console.log(`\nThe letter \x1b[32m'${guessedLetter}' \x1b[37mhas already been found!\n`);
     console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
-
+    console.log(`\x1b[37m\nYou have \x1b[33m${count} \x1b[37mguesses left\n`);
     
   } else {
     console.log(clearScreen);
@@ -156,7 +158,7 @@ while(count > 0) {
       console.log(`\x1b[33m\nYou have already guessed the letter \x1b[31m\'${guessedLetter}'\x1b[33m\.\nA repeat guess will not count against you but, it also serves no purpose.\nPlease guess a new letter below.\n`);
       // if the letter has not already been guessed and is incorrect the count WILL NOT decrement
       console.log(`\x1b[37m\nYou have \x1b[33m${count} \x1b[37mguesses left\n`);
-      console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
+      // console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     } else {
       // if there is only 1 guess left changes guesses plural to singular to be grammatically correct
       if(count === 2) {
