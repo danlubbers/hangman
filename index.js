@@ -1,11 +1,11 @@
 const prompt = require("readline-sync");
 const wordBank = require("./word-bank.json");
 
-
+// *** HEADER AND GRAPHIC ***
 const header = `\x1b[32m _  
 | |
 | |__   __ _ _ __   __ _ _ __ __    __ _ _ __
-| '_ \\ / _ '| '_ \\ / _' | '_ ' _ \\ / _' | '_ \\
+| '_ \\ / _' | '_ \\ / _' | '_ ' _ \\ / _' | '_ \\
 | | | | (_| | | | | (_| | | | | | | (_| | | | |
 |_| |_|\\__,_|_| |_|\\__, |_| |_| |_|\\__,_|_| |_|
                     __/ |                
@@ -24,7 +24,8 @@ const hangmanGraphic = `\x1b[32m___________
 -----------------
   \x1b[37m`;
 
-// Global Variables
+
+// *** Global Variables ***
 const clearScreenAndHistory = "\u001b[H\u001b[2J\u001b[3J";
 const clearScreen = "\u001B[2J\u001B[0;0f";
 const onlyAlphabetCharacters = /[a-z]/gi;
@@ -34,7 +35,7 @@ let guessedLetter = Boolean;
 let isFound = Boolean;
 let hasCharacterAlreadyBeenGuessed = '';
 let count = 6;
-let correctCharacters = '';
+let correctCharacters = [];
 let incorrectCharacters = [];
 
 // State
@@ -47,7 +48,6 @@ let gameResults = {
 // Starts with a fresh clear interface
 console.log(clearScreenAndHistory);
 
-wordGenerator();
 // function generates new random word
 function wordGenerator() {
   // Gets a random number between 0 and length of the array and sets it to the variable
@@ -58,6 +58,7 @@ function wordGenerator() {
   randomWord = wordBank[randomWordIndex].toUpperCase();
   // console.log({randomWord});
 }
+wordGenerator();
 
 
 // The correctCharacters Array length has to be set after the wordGenerator() because otherwise the randomWord has not been initialized yet and will be a length of 0
@@ -70,7 +71,7 @@ console.log(hangmanGraphic);
 
 // Greeting when logging in for the First Time
 console.log(`Welcome to Hangman!\nPress CTRL-C to stop\n`);
-console.log(`\nWords are chosen at random for each round`);
+console.log(`\n*Words are chosen at random for each round`);
 console.log(`\nBegin by inputting your first guess below...\n`);
 
 
@@ -125,6 +126,8 @@ while(count > 0) {
     // maps over indexOfAll and pushes the guessedLetter to each index in which it was found
     indexOfAll.map(indexNum => correctCharacters.splice(indexNum, 1, guessedLetter))
     // correctCharacters.push(guessedLetter);
+
+    hangmanGraphicBuilder();
     console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     
     // if correctCharacters array already has the guessed letter, will notify, has already been found.
@@ -145,22 +148,8 @@ while(count > 0) {
     console.log(`\nThe letter \x1b[31m'${guessedLetter}' \x1b[37mwas 'NOT' found!\n`); 
     console.log(`Incorrect Guesses: \x1b[36m${incorrectCharacters.join(' ')}\x1b[37m\n`);
     
-    // *** START OF HANGMAN GRAPHIC ***
-      switch(count) {
-        case 6: console.log(`    🙂\n`);
-          break;
-        case 5: console.log(`    🤨\n     |\n`);
-          break;
-        case 4: console.log(`    😑\n    \\|\n`);
-          break;
-        case 3: console.log(`    😳\n\    \\|/\n     |\n`);
-          break;
-        case 2: console.log(`    😵\n\    \\|/\n     |\n    /\n`);
-          break;
-        case 1: console.log(`    💀\n\    \\|/\n     |\n    / \\\n`);
-          break;
-      };
-    
+    hangmanGraphicBuilder();
+
     console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     
     if(hasCharacterAlreadyBeenGuessed) {
@@ -231,4 +220,90 @@ while(count > 0) {
     
     endOfRound();
   }
+}
+
+
+// *** START OF HANGMAN GRAPHIC ***
+function hangmanGraphicBuilder() {
+  switch(count) {
+    case 6: console.log(`\x1b[32m___________
+| /       |
+|/        |
+|        🙂
+|        
+|        
+|        
+|
+|     
+-----------------
+\x1b[37m`); 
+    break;
+
+    case 5: console.log(`\x1b[32m___________
+| /       |
+|/        |
+|        🤨
+|         \x1b[37m|\x1b[32m
+|         \x1b[37m|\x1b[32m 
+|       
+|
+| 
+-----------------
+\x1b[37m`);
+      
+    break;
+
+    case 4: console.log(`\x1b[32m___________
+| /       |
+|/        |
+|        😑
+|        \x1b[37m\\|\x1b[32m
+|         \x1b[37m|\x1b[32m
+|        
+|
+| 
+-----------------
+        \x1b[37m`);
+
+    break;
+
+    case 3: console.log(`\x1b[32m___________
+| /       |
+|/        |
+|        😳
+|        \x1b[37m\\|/\x1b[32m
+|         \x1b[37m|\x1b[32m
+|        
+|
+|  
+-----------------
+          \x1b[37m`);
+    break;
+
+    case 2: console.log(`\x1b[32m___________
+| /       |
+|/        |
+|        😵
+|        \x1b[37m\\|/\x1b[32m
+|         \x1b[37m|\x1b[32m
+|        \x1b[37m/\x1b[32m
+|
+|    
+-----------------
+          \x1b[37m`);
+    break;
+
+    case 1: console.log(`\x1b[32m___________
+| /       |
+|/        |
+|        💀
+|        \x1b[37m\\|/\x1b[32m
+|         \x1b[37m|\x1b[32m
+|        \x1b[37m/ \\\x1b[32m
+|
+|     🔥🔥🔥🔥🔥🔥🔥🔥🔥
+-----------------
+          \x1b[37m`);
+    break;
+  };
 }
