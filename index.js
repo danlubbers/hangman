@@ -1,13 +1,38 @@
 const prompt = require("readline-sync");
 const wordBank = require("./word-bank.json");
 
+
+const header = `\x1b[32m _  
+| |
+| |__   __ _ _ __   __ _ _ __ __    __ _ _ __
+| '_ \\ / _ '| '_ \\ / _' | '_ ' _ \\ / _' | '_ \\
+| | | | (_| | | | | (_| | | | | | | (_| | | | |
+|_| |_|\\__,_|_| |_|\\__, |_| |_| |_|\\__,_|_| |_|
+                    __/ |                
+                   |___/        By: Dan Lubbers        
+\x1b[37m`;
+
+const hangmanGraphic = `\x1b[32m___________
+|         |
+|         |
+|         🤯
+|        \\|/
+|         |
+|        / \\
+|
+|     🔥🔥🔥🔥🔥🔥🔥🔥🔥
+-----------------
+  \x1b[37m`;
+
 // Global Variables
 const clearScreenAndHistory = "\u001b[H\u001b[2J\u001b[3J";
 const clearScreen = "\u001B[2J\u001B[0;0f";
 const onlyAlphabetCharacters = /[a-z]/gi;
 let randomWordIndex = undefined;
 let randomWord = '';
-let guessedLetter = '';
+let guessedLetter = Boolean;
+let isFound = Boolean;
+let hasCharacterAlreadyBeenGuessed = '';
 let count = 6;
 let correctCharacters = '';
 let incorrectCharacters = [];
@@ -40,6 +65,9 @@ correctCharacters = Array(randomWord.length).fill('__');
 // console.log('after initialization: ', correctCharacters);
 
 // *** GREETING *** 
+console.log(header);
+console.log(hangmanGraphic);
+
 // Greeting when logging in for the First Time
 console.log(`Welcome to Hangman!\nPress CTRL-C to stop\n`);
 console.log(`\nWords are chosen at random for each round`);
@@ -76,13 +104,13 @@ while(count > 0) {
   // console.log('After Input Check: ', letter);
 
   // isFound variable checks if the letter is in the word
-  let isFound = randomWord.split('').includes(guessedLetter);
+  isFound = randomWord.split('').includes(guessedLetter);
 
   // Checks if letter has already been guessed
-  let hasCharacterAlreadyBeenGuessed = incorrectCharacters.includes(guessedLetter);
+  hasCharacterAlreadyBeenGuessed = incorrectCharacters.includes(guessedLetter);
   // console.log('hasCharacterAlreadyBeenGuessed: ', hasCharacterAlreadyBeenGuessed);
 
-  // if isFound is true and the letter is not already been added to correctCharacters log the letter was found
+  // if isFound is true and the letter is not already been added to correctCharacters, log the letter was found
   if(isFound && !correctCharacters.includes(guessedLetter)) { 
     console.log(`\nThe letter \x1b[32m'${guessedLetter}' \x1b[37mwas found!\n`); 
     
@@ -104,24 +132,23 @@ while(count > 0) {
     // A wrong guess pushes the letter to the incorrectCharacters array
     incorrectCharacters.push(guessedLetter);
     console.log(`\nThe letter \x1b[31m'${guessedLetter}' \x1b[37mwas 'NOT' found!\n`); 
-    console.log(`Incorrect Guesses: \x1b[31m${incorrectCharacters.join(' ')}\x1b[37m\n`);
-    
+    console.log(`Incorrect Guesses: \x1b[36m${incorrectCharacters.join(' ')}\x1b[37m\n`);
     
     // *** START OF HANGMAN GRAPHIC ***
-    switch(count) {
-      case 6: console.log(`    🙂\n`);
-        break;
-      case 5: console.log(`    🤨\n     |\n`);
-        break;
-      case 4: console.log(`    😑\n    \\|\n`);
-        break;
-      case 3: console.log(`    😳\n\    \\|/\n     |\n`);
-        break;
-      case 2: console.log(`    😵\n\    \\|/\n     |\n    /\n`);
-        break;
-      case 1: console.log(`    💀\n\    \\|/\n     |\n    / \\\n`);
-        break;
-    };
+      switch(count) {
+        case 6: console.log(`    🙂\n`);
+          break;
+        case 5: console.log(`    🤨\n     |\n`);
+          break;
+        case 4: console.log(`    😑\n    \\|\n`);
+          break;
+        case 3: console.log(`    😳\n\    \\|/\n     |\n`);
+          break;
+        case 2: console.log(`    😵\n\    \\|/\n     |\n    /\n`);
+          break;
+        case 1: console.log(`    💀\n\    \\|/\n     |\n    / \\\n`);
+          break;
+      };
     
     console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     
