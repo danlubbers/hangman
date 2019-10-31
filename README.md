@@ -1,9 +1,9 @@
 # hangman
 AlbanyCanCode Personal Project
 
-
-![Hangman Screenshot](https://github.com/danlubbers/hangman/blob/master/assets/dan-lubbers-hangman.png)
-
+<p align="center">
+  <img src="https://github.com/danlubbers/hangman/blob/master/assets/dan-lubbers-hangman.png" alt="dan-lubbers-hangman-screen-shot">
+</p>
 
 ## Getting Started
 
