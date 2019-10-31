@@ -2,7 +2,7 @@
 AlbanyCanCode Personal Project
 
 
-![Hangman Screenshot](https://github.com/danlubbers/hangman/blob/master/assets/dan-lubbers-hangman.png")
+![Hangman Screenshot](https://github.com/danlubbers/hangman/blob/master/assets/dan-lubbers-hangman.png)
 
 
 ## Getting Started
