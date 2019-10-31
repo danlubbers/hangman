@@ -129,9 +129,6 @@ while(count > 0) {
     console.log(` \x1b[32m${correctCharacters.join(' ')}\x1b[37m\n`);
     console.log(`Incorrect Guesses: \x1b[36m${incorrectCharacters.join(' ')}\x1b[37m\n`);
     console.log(`\nThe letter \x1b[32m'${guessedLetter}' \x1b[37mwas found!\n`); 
-    
-    
-    
     console.log(`\x1b[37m\nYou have \x1b[33m${count} \x1b[37mguesses left\n`);
     
     // if correctCharacters array already has the guessed letter, will notify, has already been found.
@@ -147,7 +144,7 @@ while(count > 0) {
     console.log(clearScreen);
     console.log(header);
 
-    // *** THIS DECREMENTS THE COUNT FOR A WRONG GUESS!!! ***
+    // *** THIS IS WHERE COUNT DECREMENTS FOR A WRONG GUESS!!! ***
     console.log(count--);
     
     hangmanGraphicBuilder(count);
@@ -161,7 +158,7 @@ while(count > 0) {
 
     
     if(hasCharacterAlreadyBeenGuessed) {
-      // *** This increments the count so the the count does not decrement for the same incorrect letter
+      // *** This increments the count so the count does not decrement for the same incorrect letter
       console.log(count++);
       
       // Informs the user that they have already guessed that particular letter 
@@ -237,6 +234,8 @@ while(count > 0) {
 
 // *** START OF HANGMAN GRAPHIC ***
 function hangmanGraphicBuilder(count) {
+  // If statement checks if character has already been guessed and if so increments count in graphic to match the amount of guesses left
+  if(hasCharacterAlreadyBeenGuessed) count++
   console.log('Count logged in Hangman Graphic', count)
   switch(count) {
     case 5: console.log(`\x1b[32m___________
