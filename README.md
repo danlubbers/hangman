@@ -1,44 +1,33 @@
+<p align="center">
 # hangman
 AlbanyCanCode Personal Project
+</p>
 
 <p align="center">
   <img src="https://github.com/danlubbers/hangman/blob/master/assets/dan-lubbers-hangman.png" alt="dan-lubbers-hangman-screen-shot">
 </p>
 
 ## Getting Started
+Welcome to my Hangman game made entirely of Javascript in Nodejs
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+### Instructions
+Clone the repo to your local machine. 
+To start the game, cd into the hangman directory and type: 
+
+```
+node . 
+```
+
+
+
 
 ### Prerequisites
 
-You will need the readline-sync
-
 ```
-Give examples
+You will need to install the readline-sync npm package
 ```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
 
 ## Authors
 
-* **Dan Lubbers** - *Initial work*
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **Dan Lubbers** [danlubbers.com](https://danlubbers.com)
 
