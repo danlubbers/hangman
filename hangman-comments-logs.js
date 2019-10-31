@@ -24,6 +24,8 @@ const hangmanGraphic = `\x1b[32m___________
 -----------------
   \x1b[37m`;
 
+let testWord = 'AENIMA';
+
 // *** Global Variables ***
 const clearScreenAndHistory = "\u001b[H\u001b[2J\u001b[3J";
 const clearScreen = "\u001B[2J\u001B[0;0f";
@@ -51,16 +53,18 @@ console.log(clearScreenAndHistory);
 function wordGenerator() {
   // Gets a random number between 0 and length of the array and sets it to the variable
   randomWordIndex = Math.floor(Math.random(wordBank) * (wordBank.length - 0) + 0);
-
+  // console.log(randomWordIndex);
+  
   // Uses the randomWordIndex to set the actual word from the array to the variable 
   randomWord = wordBank[randomWordIndex].toUpperCase();
+  // console.log({randomWord});
 }
 wordGenerator();
 
 
 // The correctCharacters Array length has to be set after the wordGenerator() because otherwise the randomWord has not been initialized yet and will be a length of 0
 correctCharacters = Array(randomWord.length).fill('__');
-
+// console.log('after initialization: ', correctCharacters);
 
 // *** GREETING *** 
 console.log(header);
@@ -99,17 +103,21 @@ while(count > 0) {
     }
   }
   
+  // console.log('After Input Check: ', letter);
+  
   // isFound variable checks if the letter is in the word
   isFound = randomWord.split('').includes(guessedLetter);
   
   // Checks if letter has already been guessed
   hasCharacterAlreadyBeenGuessed = incorrectCharacters.includes(guessedLetter);
+  // console.log('hasCharacterAlreadyBeenGuessed: ', hasCharacterAlreadyBeenGuessed);
   
   // if isFound is true and the letter is not already been added to correctCharacters, log the letter was found
   if(isFound && !correctCharacters.includes(guessedLetter)) { 
     console.log(clearScreen);
     console.log(header);
     
+    // *** THIS IS WHERE THE FIRST BUG IS ***
     hangmanGraphicBuilder(count);
     // If guessed letter is found, gets "all" the indexs of letter in randomWord
     const indexOfAll = randomWord.split('').map((letter, idx) => letter === guessedLetter ? idx : null).filter(idx => idx !== null)  
@@ -136,8 +144,8 @@ while(count > 0) {
     console.log(clearScreen);
     console.log(header);
 
-    // THIS IS WHERE COUNT DECREMENTS FOR A WRONG GUESS!!!
-    count--;
+    // *** THIS IS WHERE COUNT DECREMENTS FOR A WRONG GUESS!!! ***
+    console.log(count--);
     
     hangmanGraphicBuilder(count);
     console.log(` \x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
@@ -146,15 +154,18 @@ while(count > 0) {
     console.log(`\nThe letter \x1b[31m'${guessedLetter}' \x1b[37mwas 'NOT' found!\n`); 
     console.log(`Incorrect Guesses: \x1b[36m${incorrectCharacters.join(' ')}\x1b[37m\n`);
     
+    
 
+    
     if(hasCharacterAlreadyBeenGuessed) {
-      // This increments the count so the count does not decrement for the same incorrect letter
+      // *** This increments the count so the count does not decrement for the same incorrect letter
       count++
       
       // Informs the user that they have already guessed that particular letter 
       console.log(`\x1b[33m\nYou have already guessed the letter \x1b[31m\'${guessedLetter}'\x1b[33m\.\nA repeat guess will not count against you but, it also serves no purpose.\nPlease guess a new letter below.\n`);
       // if the letter has not already been guessed and is incorrect the count WILL NOT decrement
       console.log(`\x1b[37m\nYou have \x1b[33m${count} \x1b[37mguesses left\n`);
+      // console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     } else {
       
       // if there is only 1 guess left changes guesses plural to singular to be grammatically correct
@@ -223,9 +234,9 @@ while(count > 0) {
 
 // *** START OF HANGMAN GRAPHIC ***
 function hangmanGraphicBuilder(count) {
-  // If statement, checks if character has already been guessed and if so increments count in graphic to match the amount of guesses left
-  if(hasCharacterAlreadyBeenGuessed) count++;
-
+  // If statement checks if character has already been guessed and if so increments count in graphic to match the amount of guesses left
+  if(hasCharacterAlreadyBeenGuessed) count++
+  console.log('Count logged in Hangman Graphic', count)
   switch(count) {
     case 5: console.log(`\x1b[32m___________
 | /       |
