@@ -119,10 +119,6 @@ while(count > 0) {
     
     // *** THIS IS WHERE THE FIRST BUG IS ***
     hangmanGraphicBuilder(count);
-    
-    console.log(`Incorrect Guesses: \x1b[36m${incorrectCharacters.join(' ')}\x1b[37m\n`);
-    console.log(`\nThe letter \x1b[32m'${guessedLetter}' \x1b[37mwas found!\n`); 
-    
     // If guessed letter is found, gets "all" the indexs of letter in randomWord
     const indexOfAll = testWord.split('').map((letter, idx) => letter === guessedLetter ? idx : null).filter(idx => idx !== null)  
     
@@ -130,7 +126,11 @@ while(count > 0) {
     indexOfAll.map(indexNum => correctCharacters.splice(indexNum, 1, guessedLetter))
     // correctCharacters.push(guessedLetter);
     
-    console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
+    console.log(` \x1b[32m${correctCharacters.join(' ')}\x1b[37m\n`);
+    console.log(`Incorrect Guesses: \x1b[36m${incorrectCharacters.join(' ')}\x1b[37m\n`);
+    console.log(`\nThe letter \x1b[32m'${guessedLetter}' \x1b[37mwas found!\n`); 
+    
+    
     
     console.log(`\x1b[37m\nYou have \x1b[33m${count} \x1b[37mguesses left\n`);
     
@@ -139,8 +139,8 @@ while(count > 0) {
     console.log(clearScreen);
     console.log(header);
     hangmanGraphicBuilder(count);
+    console.log(` \x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     console.log(`\nThe letter \x1b[32m'${guessedLetter}' \x1b[37mhas already been found!\n`);
-    console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     console.log(`\x1b[37m\nYou have \x1b[33m${count} \x1b[37mguesses left\n`);
     
   } else {
@@ -151,6 +151,7 @@ while(count > 0) {
     console.log(count--);
     
     hangmanGraphicBuilder(count);
+    console.log(` \x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     // A wrong guess pushes the letter to the incorrectCharacters array
     incorrectCharacters.push(guessedLetter);
     console.log(`\nThe letter \x1b[31m'${guessedLetter}' \x1b[37mwas 'NOT' found!\n`); 
@@ -158,7 +159,6 @@ while(count > 0) {
     
     
 
-    console.log(`\x1b[32m${correctCharacters.join(' ')}\x1b[37m`);
     
     if(hasCharacterAlreadyBeenGuessed) {
       // *** This increments the count so the the count does not decrement for the same incorrect letter
